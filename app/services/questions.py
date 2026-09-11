@@ -55,6 +55,24 @@ def find_projects(question: str):
 
         projects = query.all()
 
+        scored_projects = []
+
+        for project in projects:
+            description = project.project_description.lower()
+
+            score = sum(
+                1
+                for word in search_words
+                if word in description
+            )
+
+            scored_projects.append((score, project))
+
+        scored_projects.sort(
+            key=lambda item: item[0],
+            reverse=True,
+        )
+
         return [
             {
                 "id": project.id,
@@ -70,7 +88,8 @@ def find_projects(question: str):
                 "source_id": project.source_id,
                 "source_page": project.source_page,
             }
-            for project in projects
+            for score, project in scored_projects
+            if score > 0
         ]
 
     finally:
@@ -83,6 +102,15 @@ def generate_answer(question: str, projects: list[dict]):
 
     project = projects[0]
     question_lower = question.lower()
+
+    if "percentage" in question_lower or "percent" in question_lower:
+        percentage = project["performance_percentage"]
+
+        return (
+            f"The {project['project_description']} has used "
+            f"{percentage:.1f}% of its original 2026 budget "
+            f"as reported for Q1 2026."
+        )
 
     if "spent" in question_lower or "performance" in question_lower:
         amount = project["ytd_performance"]
