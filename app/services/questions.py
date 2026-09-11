@@ -27,6 +27,7 @@ STOP_WORDS = {
     "has",
     "been",
     "budgeted",
+    "spent",
 }
 
 
@@ -81,12 +82,28 @@ def generate_answer(question: str, projects: list[dict]):
         return "I could not find a verified Lagos State project matching your question."
 
     project = projects[0]
+    question_lower = question.lower()
+
+    if "spent" in question_lower or "performance" in question_lower:
+        amount = project["ytd_performance"]
+
+        return (
+            f"The {project['project_description']} has recorded "
+            f"₦{amount:,.2f} in 2026 year-to-date expenditure "
+            f"as reported for Q1 2026."
+        )
+
+    if "left" in question_lower or "balance" in question_lower:
+        amount = project["balance"]
+
+        return (
+            f"The remaining balance for the {project['project_description']} "
+            f"is ₦{amount:,.2f} against its original 2026 budget."
+        )
 
     budget = project["original_budget"]
 
-    answer = (
+    return (
         f"The {project['project_description']} has an original 2026 budget "
         f"of ₦{budget:,.2f}."
     )
-
-    return answer
