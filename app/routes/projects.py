@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from app.database.connection import SessionLocal
 from app.database.models import ProjectDB
+from app.schemas.project import ProjectResponse
 
 
 router = APIRouter(
@@ -10,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", response_model=list[ProjectResponse])
 def get_projects(
     search: str | None = Query(default=None),
 ):
@@ -32,7 +33,7 @@ def get_projects(
         db.close()
 
 
-@router.get("/{project_id}")
+@router.get("/{project_id}", response_model=ProjectResponse)
 def get_project(project_id: int):
     db = SessionLocal()
 

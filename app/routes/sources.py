@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.database.connection import SessionLocal
 from app.database.models import SourceDB
+from app.schemas.source import SourceResponse
 
 
 router = APIRouter(
@@ -10,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.get("/")
+@router.get("/", response_model=list[SourceResponse])
 def get_sources():
     db = SessionLocal()
 
