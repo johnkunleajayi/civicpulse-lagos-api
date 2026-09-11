@@ -60,11 +60,13 @@ def find_projects(question: str):
         for project in projects:
             description = project.project_description.lower()
 
-            score = sum(
-                1
+            matched_words = [
+                word
                 for word in search_words
                 if word in description
-            )
+            ]
+
+            score = sum(len(word) for word in matched_words)
 
             scored_projects.append((score, project))
 
