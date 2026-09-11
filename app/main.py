@@ -4,6 +4,7 @@ from app.database.connection import engine
 from app.database.models import Base
 from app.routes.evidence import router as evidence_router
 from app.routes.projects import router as projects_router
+from app.routes.questions import router as questions_router
 from app.routes.sources import router as sources_router
 
 
@@ -20,6 +21,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(projects_router)
 app.include_router(sources_router)
 app.include_router(evidence_router)
+app.include_router(questions_router)
 
 
 @app.get("/")
