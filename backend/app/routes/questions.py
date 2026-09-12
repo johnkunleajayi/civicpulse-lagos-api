@@ -13,9 +13,15 @@ from app.services.questions import (
     generate_answer,
     generate_category_answer,
     generate_ranking_answer,
+    generate_scope_answer,
     generate_summary_answer,
     is_aggregate_question,
+    is_out_of_scope_question,
     is_ranking_question,
+)
+from app.services.question_intent import (
+    generate_underspecified_answer,
+    is_underspecified_question,
 )
 from app.services.summaries import get_budget_summary_evidence
 
@@ -28,6 +34,20 @@ router = APIRouter(
 
 @router.post("/", response_model=QuestionResponse)
 def ask_question(request: QuestionRequest):
+    if is_out_of_scope_question(request.question):
+        return {
+            "question": request.question,
+            "answer": generate_scope_answer(request.question),
+            "evidence": [],
+        }
+
+    if is_underspecified_question(request.question):
+        return {
+            "question": request.question,
+            "answer": generate_underspecified_answer(request.question),
+            "evidence": [],
+        }
+
     category = detect_project_category(request.question)
 
     if is_ranking_question(request.question):
