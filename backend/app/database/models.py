@@ -55,3 +55,29 @@ class ProjectDB(Base):
 
     source_id: Mapped[int] = mapped_column()
     source_page: Mapped[int] = mapped_column()
+
+
+class BudgetSummaryDB(Base):
+    __tablename__ = "budget_summaries"
+
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+
+    metric: Mapped[str] = mapped_column(String(255))
+    budget_year: Mapped[int] = mapped_column()
+    reporting_period: Mapped[str] = mapped_column(String(100))
+
+    original_budget: Mapped[Decimal | None] = mapped_column(
+        Numeric(20, 2),
+        nullable=True,
+    )
+    q1_performance: Mapped[Decimal | None] = mapped_column(
+        Numeric(20, 2),
+        nullable=True,
+    )
+    performance_percentage: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 2),
+        nullable=True,
+    )
+
+    source_id: Mapped[int] = mapped_column()
+    source_page: Mapped[int] = mapped_column()
