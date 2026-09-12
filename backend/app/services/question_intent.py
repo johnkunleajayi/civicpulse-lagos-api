@@ -240,12 +240,28 @@ def is_underspecified_question(question: str):
         "lagos state budget",
         "lagos 2026",
         "lagos state 2026",
+        "lagos 2026 budget",
+        "lagos state 2026 budget",
         "2026 budget",
         "2026 projects",
     ]
 
     if question_lower in broad_terms:
         return True
+
+    if (
+        "lagos" in words
+        and "2026" in words
+        and "budget" in words
+    ):
+        has_category_reference = any(
+            term in question_lower
+            for terms in PROJECT_CATEGORIES.values()
+            for term in terms
+        )
+
+        if not has_category_reference:
+            return True
 
     if not has_information_intent(question):
         has_category_reference = any(
