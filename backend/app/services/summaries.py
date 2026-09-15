@@ -10,7 +10,9 @@ def find_budget_summary(question: str):
             db.query(BudgetSummaryDB)
             .filter(
                 BudgetSummaryDB.budget_year == 2026,
-                BudgetSummaryDB.reporting_period == "Q1 2026",
+            )
+            .order_by(
+                BudgetSummaryDB.reporting_period.desc()
             )
             .first()
         )
@@ -24,8 +26,10 @@ def find_budget_summary(question: str):
             "budget_year": summary.budget_year,
             "reporting_period": summary.reporting_period,
             "original_budget": summary.original_budget,
-            "q1_performance": summary.q1_performance,
-            "performance_percentage": summary.performance_percentage,
+            "performance_amount": summary.q1_performance,
+            "performance_percentage": (
+                summary.performance_percentage
+            ),
             "source_id": summary.source_id,
             "source_page": summary.source_page,
         }
@@ -59,8 +63,10 @@ def get_budget_summary_evidence(summary_id: int):
             "budget_year": summary.budget_year,
             "reporting_period": summary.reporting_period,
             "original_budget": summary.original_budget,
-            "q1_performance": summary.q1_performance,
-            "performance_percentage": summary.performance_percentage,
+            "performance_amount": summary.q1_performance,
+            "performance_percentage": (
+                summary.performance_percentage
+            ),
             "source_page": summary.source_page,
             "source": source,
         }

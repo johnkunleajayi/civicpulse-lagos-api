@@ -3,15 +3,20 @@ from app.services.question_intent import extract_ranking_limit
 
 def generate_summary_answer(question: str, summary: dict):
     if not summary:
-        return "I could not find verified Lagos State budget summary data for Q1 2026."
+        return (
+            "I could not find verified Lagos State budget "
+            "summary data."
+        )
 
     question_lower = question.lower()
+    reporting_period = summary["reporting_period"]
 
     if "percentage" in question_lower or "percent" in question_lower:
         return (
-            f"Lagos State spent "
-            f"{summary['performance_percentage']:.1f}% of its 2026 capital budget "
-            f"in Q1 2026."
+            f"Lagos State recorded "
+            f"{summary['performance_percentage']:.1f}% "
+            f"capital budget performance for "
+            f"{reporting_period}."
         )
 
     if "capital budget" in question_lower:
@@ -20,13 +25,15 @@ def generate_summary_answer(question: str, summary: dict):
             f"₦{summary['original_budget']:,.2f}."
         )
 
-    amount = summary["q1_performance"]
+    amount = summary["performance_amount"]
 
     return (
-        f"Lagos State recorded ₦{amount:,.2f} in total capital expenditure "
-        f"for Q1 2026, representing "
-        f"{summary['performance_percentage']:.1f}% of the "
-        f"₦{summary['original_budget']:,.2f} capital budget."
+        f"Lagos State recorded ₦{amount:,.2f} in total "
+        f"capital expenditure for {reporting_period}, "
+        f"representing "
+        f"{summary['performance_percentage']:.1f}% "
+        f"of the ₦{summary['original_budget']:,.2f} "
+        f"capital budget."
     )
 
 
@@ -42,10 +49,16 @@ def generate_ranking_answer(
                 f"project data for 2026."
             )
 
-        return "I could not find verified Lagos State project data for 2026."
+        return (
+            "I could not find verified Lagos State "
+            "project data for 2026."
+        )
 
     limit = extract_ranking_limit(question)
     result_count = len(projects)
+    reporting_period = projects[0].get(
+        "reporting_period"
+    )
 
     if category:
         category_label = category
@@ -53,12 +66,13 @@ def generate_ranking_answer(
         if limit and result_count < limit:
             heading = (
                 f"I found {result_count} verified Lagos State "
-                f"{category_label} projects with the highest 2026 budgets:"
+                f"{category_label} projects with the highest "
+                f"2026 budgets:"
             )
         elif limit:
             heading = (
-                f"The top {limit} Lagos State {category_label} "
-                f"projects by 2026 budget are:"
+                f"The top {limit} Lagos State "
+                f"{category_label} projects by 2026 budget are:"
             )
         else:
             heading = (
@@ -68,21 +82,29 @@ def generate_ranking_answer(
 
     elif limit and result_count < limit:
         heading = (
-            f"I found {result_count} verified Lagos State projects "
-            f"with the highest 2026 budgets:"
+            f"I found {result_count} verified Lagos State "
+            f"projects with the highest 2026 budgets:"
         )
 
     elif limit:
         heading = (
-            f"The top {limit} Lagos State projects by 2026 budget are:"
+            f"The top {limit} Lagos State projects "
+            f"by 2026 budget are:"
         )
 
     else:
         heading = (
-            "The Lagos State projects with the highest 2026 budgets are:"
+            "The Lagos State projects with the highest "
+            "2026 budgets are:"
         )
 
     lines = [heading]
+
+    if reporting_period:
+        lines.append(
+            f"Performance data is available through "
+            f"{reporting_period}."
+        )
 
     for index, project in enumerate(projects, start=1):
         lines.append(
@@ -116,6 +138,10 @@ def generate_category_answer(
         if project["ytd_performance"] is not None
     )
 
+    reporting_period = projects[0].get(
+        "reporting_period"
+    )
+
     question_lower = question.lower()
 
     if "percentage" in question_lower or "percent" in question_lower:
@@ -126,8 +152,9 @@ def generate_category_answer(
         )
 
         return (
-            f"Lagos State spent {percentage:.1f}% of the verified "
-            f"{category} project budget in Q1 2026."
+            f"Lagos State recorded {percentage:.1f}% "
+            f"performance across the verified {category} "
+            f"project budget through {reporting_period}."
         )
 
     if (
@@ -140,9 +167,11 @@ def generate_category_answer(
         or "performance" in question_lower
     ):
         lines = [
-            f"Lagos State recorded ₦{total_spending:,.2f} in "
-            f"expenditure across {len(projects)} verified "
-            f"{category} projects in Q1 2026.",
+            f"Lagos State recorded "
+            f"₦{total_spending:,.2f} "
+            f"in year-to-date expenditure across "
+            f"{len(projects)} verified {category} projects "
+            f"through {reporting_period}.",
             "",
             "Project breakdown:",
         ]
@@ -176,18 +205,29 @@ def generate_category_answer(
         return "\n".join(lines)
 
     return (
-        f"Lagos State has ₦{total_budget:,.2f} budgeted across "
-        f"{len(projects)} verified {category} projects in 2026."
+        f"Lagos State has ₦{total_budget:,.2f} budgeted "
+        f"across {len(projects)} verified {category} "
+        f"projects in 2026."
     )
 
 
 def generate_answer(question: str, projects: list[dict]):
     if not projects:
-        return "I could not find a verified Lagos State project matching your question."
+        return (
+            "I could not find a verified Lagos State "
+            "project matching your question."
+        )
 
     project = projects[0]
     question_lower = question.lower()
     project_name = project["project_description"]
+    reporting_period = project.get("reporting_period")
+
+    period_label = (
+        f"as reported through {reporting_period}"
+        if reporting_period
+        else "according to the available performance data"
+    )
 
     if "percentage" in question_lower or "percent" in question_lower:
         percentage = project["performance_percentage"]
@@ -195,7 +235,7 @@ def generate_answer(question: str, projects: list[dict]):
         return (
             f"{project_name} has used "
             f"{percentage:.1f}% of its original 2026 budget "
-            f"as reported for Q1 2026."
+            f"{period_label}."
         )
 
     if "spent" in question_lower or "performance" in question_lower:
@@ -203,8 +243,8 @@ def generate_answer(question: str, projects: list[dict]):
 
         return (
             f"{project_name} has recorded "
-            f"₦{amount:,.2f} in 2026 year-to-date expenditure "
-            f"as reported for Q1 2026."
+            f"₦{amount:,.2f} in year-to-date expenditure "
+            f"{period_label}."
         )
 
     if "left" in question_lower or "balance" in question_lower:
@@ -212,7 +252,8 @@ def generate_answer(question: str, projects: list[dict]):
 
         return (
             f"The remaining balance for {project_name} "
-            f"is ₦{amount:,.2f} against its original 2026 budget."
+            f"is ₦{amount:,.2f} against its original 2026 "
+            f"budget {period_label}."
         )
 
     budget = project["original_budget"]

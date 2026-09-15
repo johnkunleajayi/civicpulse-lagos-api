@@ -3,12 +3,78 @@ import re
 from sqlalchemy import or_
 
 from app.database.connection import SessionLocal
-from app.database.models import ProjectDB
+from app.database.models import ProjectDB, ProjectPerformanceDB
 from app.services.question_intent import (
     CATEGORY_ADMINISTRATIONS,
     PROJECT_CATEGORIES,
     STOP_WORDS,
 )
+
+
+def get_latest_performance(db, project_id):
+    return (
+        db.query(ProjectPerformanceDB)
+        .filter(
+            ProjectPerformanceDB.project_id == project_id,
+        )
+        .order_by(
+            ProjectPerformanceDB.reporting_period.desc()
+        )
+        .first()
+    )
+
+
+def project_to_dict(db, project):
+    performance = get_latest_performance(
+        db,
+        project.id,
+    )
+
+    return {
+        "id": project.id,
+        "administrative_code": project.administrative_code,
+        "administrative_description": project.administrative_description,
+        "project_description": project.project_description,
+        "budget_year": project.budget_year,
+        "original_budget": project.original_budget,
+
+        "reporting_period": (
+            performance.reporting_period
+            if performance
+            else None
+        ),
+        "period_performance": (
+            performance.period_performance
+            if performance
+            else None
+        ),
+        "ytd_performance": (
+            performance.ytd_performance
+            if performance
+            else None
+        ),
+        "performance_percentage": (
+            performance.performance_percentage
+            if performance
+            else None
+        ),
+        "balance": (
+            performance.balance
+            if performance
+            else None
+        ),
+
+        "source_id": (
+            performance.source_id
+            if performance
+            else project.source_id
+        ),
+        "source_page": (
+            performance.source_page
+            if performance
+            else project.source_page
+        ),
+    }
 
 
 def find_projects(question: str):
@@ -88,20 +154,7 @@ def find_projects(question: str):
         )
 
         return [
-            {
-                "id": project.id,
-                "administrative_code": project.administrative_code,
-                "administrative_description": project.administrative_description,
-                "project_description": project.project_description,
-                "budget_year": project.budget_year,
-                "original_budget": project.original_budget,
-                "q1_performance": project.q1_performance,
-                "ytd_performance": project.ytd_performance,
-                "performance_percentage": project.performance_percentage,
-                "balance": project.balance,
-                "source_id": project.source_id,
-                "source_page": project.source_page,
-            }
+            project_to_dict(db, project)
             for score, project in scored_projects
         ]
 
@@ -113,10 +166,16 @@ def find_category_projects(category: str):
     db = SessionLocal()
 
     try:
-        category_terms = PROJECT_CATEGORIES.get(category, [])
-        administration_terms = CATEGORY_ADMINISTRATIONS.get(
+        category_terms = PROJECT_CATEGORIES.get(
             category,
             [],
+        )
+
+        administration_terms = (
+            CATEGORY_ADMINISTRATIONS.get(
+                category,
+                [],
+            )
         )
 
         if not category_terms and not administration_terms:
@@ -167,20 +226,7 @@ def find_category_projects(category: str):
         )
 
         return [
-            {
-                "id": project.id,
-                "administrative_code": project.administrative_code,
-                "administrative_description": project.administrative_description,
-                "project_description": project.project_description,
-                "budget_year": project.budget_year,
-                "original_budget": project.original_budget,
-                "q1_performance": project.q1_performance,
-                "ytd_performance": project.ytd_performance,
-                "performance_percentage": project.performance_percentage,
-                "balance": project.balance,
-                "source_id": project.source_id,
-                "source_page": project.source_page,
-            }
+            project_to_dict(db, project)
             for project in projects
         ]
 
@@ -195,10 +241,16 @@ def find_ranked_category_projects(
     db = SessionLocal()
 
     try:
-        category_terms = PROJECT_CATEGORIES.get(category, [])
-        administration_terms = CATEGORY_ADMINISTRATIONS.get(
+        category_terms = PROJECT_CATEGORIES.get(
             category,
             [],
+        )
+
+        administration_terms = (
+            CATEGORY_ADMINISTRATIONS.get(
+                category,
+                [],
+            )
         )
 
         if not category_terms and not administration_terms:
@@ -252,20 +304,7 @@ def find_ranked_category_projects(
         projects = query.all()
 
         return [
-            {
-                "id": project.id,
-                "administrative_code": project.administrative_code,
-                "administrative_description": project.administrative_description,
-                "project_description": project.project_description,
-                "budget_year": project.budget_year,
-                "original_budget": project.original_budget,
-                "q1_performance": project.q1_performance,
-                "ytd_performance": project.ytd_performance,
-                "performance_percentage": project.performance_percentage,
-                "balance": project.balance,
-                "source_id": project.source_id,
-                "source_page": project.source_page,
-            }
+            project_to_dict(db, project)
             for project in projects
         ]
 
@@ -289,20 +328,7 @@ def find_ranked_projects(limit: int | None = None):
         projects = query.all()
 
         return [
-            {
-                "id": project.id,
-                "administrative_code": project.administrative_code,
-                "administrative_description": project.administrative_description,
-                "project_description": project.project_description,
-                "budget_year": project.budget_year,
-                "original_budget": project.original_budget,
-                "q1_performance": project.q1_performance,
-                "ytd_performance": project.ytd_performance,
-                "performance_percentage": project.performance_percentage,
-                "balance": project.balance,
-                "source_id": project.source_id,
-                "source_page": project.source_page,
-            }
+            project_to_dict(db, project)
             for project in projects
         ]
 
