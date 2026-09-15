@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import civicPulseLogo from "./assets/civic-logo.png"
 import lagosBridgeBackground from "./assets/civic-bg.png"
 
-const API_URL = "http://127.0.0.1:8000"
+const API_URL = "https://civicpulse-lagos-api.onrender.com"
 
 function App() {
   const [question, setQuestion] = useState("")
