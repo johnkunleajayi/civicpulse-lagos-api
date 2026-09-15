@@ -202,7 +202,6 @@ SUGGESTION_TOPICS = {
     "agriculture": [
         "How much was budgeted for agriculture projects?",
         "How much has Lagos spent on agriculture projects?",
-        "What percentage of the agriculture project budget was spent?",
         "What are the largest agriculture projects?",
         "Which agriculture projects have the highest budgets?",
         "Which agriculture projects have received the most spending?",
@@ -316,6 +315,7 @@ def has_information_intent(question: str):
 
     information_terms = [
         "budget",
+        "budgets",
         "cost",
         "funding",
         "funded",
@@ -387,6 +387,9 @@ def detect_clarification_topic(question: str):
         return "spending"
 
     if "budgeted" in question_lower:
+        return "budget"
+
+    if "budget" in question_lower:
         return "budget"
 
     return None
@@ -493,6 +496,67 @@ def is_ambiguous_spending_question(question: str):
     return False
 
 
+def is_ambiguous_budget_question(question: str):
+    question_lower = question.lower().strip()
+
+    budget_terms = [
+        "budget",
+        "budgets",
+        "budgeted",
+        "budgeting",
+    ]
+
+    has_budget_term = any(
+        term in question_lower
+        for term in budget_terms
+    )
+
+    if not has_budget_term:
+        return False
+
+    # A recognized project category gives the question enough
+    # scope to answer.
+    if has_project_category_reference(question):
+        return False
+
+    # A ranking question already has a clear intent.
+    if is_ranking_question(question):
+        return False
+
+    # An explicit aggregate budget question already has a
+    # dedicated answer path.
+    if is_aggregate_question(question):
+        return False
+
+    specific_budget_terms = [
+        "project",
+        "projects",
+        "capital project",
+        "capital projects",
+        "capital budget",
+        "total budget",
+        "overall budget",
+        "specific project",
+        "funding",
+        "funded",
+        "allocated",
+        "allocation",
+    ]
+
+    if any(
+        term in question_lower
+        for term in specific_budget_terms
+    ):
+        return False
+
+    # Broad questions about Lagos budgets without a specific
+    # subject should be clarified.
+    if "lagos" in question_lower:
+        return True
+
+    return False
+
+
 def is_underspecified_question(question: str):
     question_lower = question.lower().strip()
 
@@ -525,6 +589,9 @@ def is_underspecified_question(question: str):
         return True
 
     if is_ambiguous_spending_question(question):
+        return True
+
+    if is_ambiguous_budget_question(question):
         return True
 
     if is_ranking_question(question):

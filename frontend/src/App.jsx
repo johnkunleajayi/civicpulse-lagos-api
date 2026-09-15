@@ -95,8 +95,22 @@ function App() {
   const suggestedQuestions = getSuggestedQuestions()
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
+    <div className="relative min-h-screen overflow-x-hidden text-slate-900">
+      {/* Full-page Lagos background */}
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <img
+          src={lagosBridgeBackground}
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover"
+        />
+
+        <div className="absolute inset-0 bg-white/75"></div>
+
+        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-blue-50/85"></div>
+      </div>
+
+      <header className="border-b border-white/70 bg-white/85 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div>
             <img
@@ -106,7 +120,7 @@ function App() {
             />
           </div>
 
-          <div className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-sm font-medium text-emerald-700 sm:flex">
+          <div className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50/95 px-3 py-1.5 text-sm font-medium text-emerald-700 sm:flex">
             <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
             Lagos civic information
           </div>
@@ -116,20 +130,10 @@ function App() {
       <main>
         {/* Lagos Hero */}
         <section className="relative overflow-hidden">
-          <img
-            src={lagosBridgeBackground}
-            alt=""
-            aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-cover"
-          />
-
-          <div className="absolute inset-0 bg-white/75"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/65 to-blue-50/80"></div>
-
           <div className="relative mx-auto max-w-5xl px-6 pb-20 pt-16 text-center sm:pb-24 sm:pt-24">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white/90 px-4 py-2 text-sm font-semibold text-blue-700 shadow-sm backdrop-blur-sm">
               <span className="h-2 w-2 rounded-full bg-blue-600"></span>
-              Lagos public information, made understandable
+              2026 Lagos civic data
             </div>
 
             <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
@@ -175,6 +179,13 @@ function App() {
                 Ask about Lagos State budgets, projects, spending, and
                 infrastructure.
               </p>
+
+              <p className="mt-4 text-sm font-medium text-slate-500">
+                <span className="font-semibold text-slate-700">
+                  Current data coverage:
+                </span>{" "}
+                Lagos State's 2026 budget and Q2 2026 performance data.
+              </p>
             </div>
 
             <div className="mt-6 flex flex-wrap justify-center gap-2">
@@ -216,7 +227,7 @@ function App() {
             </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
-              <span>2026 Lagos Budget</span>
+              <span>2026 Data Coverage</span>
               <span className="hidden h-1 w-1 rounded-full bg-slate-400 sm:block"></span>
               <span>Q2 2026 Performance</span>
               <span className="hidden h-1 w-1 rounded-full bg-slate-400 sm:block"></span>
@@ -227,7 +238,7 @@ function App() {
 
         {error && (
           <section className="mx-auto max-w-4xl px-6 pb-12 pt-8">
-            <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-red-700">
+            <div className="rounded-2xl border border-red-200 bg-red-50/95 p-6 text-red-700 shadow-sm backdrop-blur-sm">
               <p className="font-semibold">Unable to answer</p>
               <p className="mt-1 text-sm">{error}</p>
             </div>
@@ -239,7 +250,7 @@ function App() {
             ref={answerSectionRef}
             className="scroll-mt-6 mx-auto max-w-4xl px-6 pb-16 pt-10"
           >
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+            <div className="rounded-2xl border border-white/80 bg-white/95 p-6 shadow-xl shadow-slate-900/10 backdrop-blur-sm sm:p-8">
               {isClarification ? (
                 <div className="mb-6 flex items-center gap-2">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 font-semibold text-blue-700">
@@ -465,7 +476,7 @@ function App() {
           </section>
         )}
 
-        <section className="border-y border-slate-200 bg-white">
+        <section className="border-y border-white/70 bg-white/80 backdrop-blur-sm">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
@@ -483,7 +494,7 @@ function App() {
             </div>
 
             <div className="mt-12 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:shadow-md">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6 transition hover:-translate-y-1 hover:shadow-md">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-blue-50 text-xl">
                   🔎
                 </div>
@@ -498,7 +509,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:shadow-md">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6 transition hover:-translate-y-1 hover:shadow-md">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-xl">
                   ✓
                 </div>
@@ -513,7 +524,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:shadow-md">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6 transition hover:-translate-y-1 hover:shadow-md">
                 <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-amber-50 text-xl">
                   →
                 </div>
@@ -531,7 +542,7 @@ function App() {
           </div>
         </section>
 
-        <section className="bg-slate-50">
+        <section className="bg-white/65 backdrop-blur-sm">
           <div className="mx-auto max-w-6xl px-6 py-16">
             <div className="mx-auto max-w-3xl text-center">
               <p className="text-sm font-semibold uppercase tracking-wide text-blue-700">
@@ -549,7 +560,7 @@ function App() {
             </div>
 
             <div className="mt-10 grid gap-6 md:grid-cols-3">
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-xl font-bold text-blue-700">
                   1
                 </div>
@@ -564,7 +575,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-xl font-bold text-emerald-700">
                   2
                 </div>
@@ -579,7 +590,7 @@ function App() {
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-200 bg-white p-6">
+              <div className="rounded-2xl border border-slate-200 bg-white/90 p-6">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-xl font-bold text-amber-700">
                   3
                 </div>
@@ -598,8 +609,12 @@ function App() {
         </section>
       </main>
 
-      <footer className="bg-slate-950 px-6 py-8 text-center text-sm text-slate-400">
-        CivicPulse Lagos · Information you can trust
+      <footer className="bg-slate-950/95 px-6 py-8 text-center text-sm text-slate-400 backdrop-blur-sm">
+        <p>CivicPulse Lagos · Information you can trust</p>
+        <p className="mt-2 text-xs text-slate-500">
+          Current coverage: Lagos State public budget and project information
+          for 2026, including Q2 2026 performance data.
+        </p>
       </footer>
     </div>
   )
