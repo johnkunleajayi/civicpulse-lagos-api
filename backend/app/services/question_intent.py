@@ -111,6 +111,12 @@ def is_aggregate_question(question: str):
         "percent of the capital budget",
         "projects in q1",
         "projects in the first quarter",
+        "lagos budget 2026",
+        "lagos state budget 2026",
+        "lagos 2026 budget",
+        "lagos state 2026 budget",
+        "2026 lagos budget",
+        "2026 lagos state budget",
     ]
 
     return any(

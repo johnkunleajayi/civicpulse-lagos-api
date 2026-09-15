@@ -1,8 +1,8 @@
 from datetime import date
 from decimal import Decimal
 
-from sqlalchemy import Date, Numeric, String
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy import Date, ForeignKey, Numeric, String
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class Base(DeclarativeBase):
@@ -36,18 +36,24 @@ class ProjectDB(Base):
         Numeric(20, 2),
         nullable=True,
     )
+
+    # Legacy Q1 fields retained temporarily while we migrate
+    # the application to ProjectPerformanceDB.
     q1_performance: Mapped[Decimal | None] = mapped_column(
         Numeric(20, 2),
         nullable=True,
     )
+
     ytd_performance: Mapped[Decimal | None] = mapped_column(
         Numeric(20, 2),
         nullable=True,
     )
+
     performance_percentage: Mapped[Decimal | None] = mapped_column(
         Numeric(10, 2),
         nullable=True,
     )
+
     balance: Mapped[Decimal | None] = mapped_column(
         Numeric(20, 2),
         nullable=True,
@@ -55,6 +61,60 @@ class ProjectDB(Base):
 
     source_id: Mapped[int] = mapped_column()
     source_page: Mapped[int] = mapped_column()
+
+    performances: Mapped[list["ProjectPerformanceDB"]] = relationship(
+        back_populates="project",
+        cascade="all, delete-orphan",
+    )
+
+
+class ProjectPerformanceDB(Base):
+    __tablename__ = "project_performances"
+
+    id: Mapped[int] = mapped_column(
+        primary_key=True,
+        autoincrement=True,
+    )
+
+    project_id: Mapped[int] = mapped_column(
+        ForeignKey("projects.id"),
+    )
+
+    reporting_period: Mapped[str] = mapped_column(
+        String(100),
+    )
+
+    period_performance: Mapped[Decimal | None] = mapped_column(
+        Numeric(20, 2),
+        nullable=True,
+    )
+
+    ytd_performance: Mapped[Decimal | None] = mapped_column(
+        Numeric(20, 2),
+        nullable=True,
+    )
+
+    performance_percentage: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 2),
+        nullable=True,
+    )
+
+    balance: Mapped[Decimal | None] = mapped_column(
+        Numeric(20, 2),
+        nullable=True,
+    )
+
+    source_id: Mapped[int] = mapped_column(
+        ForeignKey("sources.id"),
+    )
+
+    source_page: Mapped[int] = mapped_column()
+
+    project: Mapped["ProjectDB"] = relationship(
+        back_populates="performances",
+    )
+
+    source: Mapped["SourceDB"] = relationship()
 
 
 class BudgetSummaryDB(Base):
@@ -70,10 +130,12 @@ class BudgetSummaryDB(Base):
         Numeric(20, 2),
         nullable=True,
     )
+
     q1_performance: Mapped[Decimal | None] = mapped_column(
         Numeric(20, 2),
         nullable=True,
     )
+
     performance_percentage: Mapped[Decimal | None] = mapped_column(
         Numeric(10, 2),
         nullable=True,
