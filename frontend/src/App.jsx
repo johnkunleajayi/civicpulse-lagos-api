@@ -105,9 +105,9 @@ function App() {
           className="h-full w-full object-cover"
         />
 
-        <div className="absolute inset-0 bg-white/75"></div>
+        <div className="absolute inset-0 bg-white/45"></div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/70 to-blue-50/85"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-white/65 via-white/40 to-blue-50/65"></div>
       </div>
 
       <header className="border-b border-white/70 bg-white/85 backdrop-blur-md">
