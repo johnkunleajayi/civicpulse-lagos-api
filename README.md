@@ -2,124 +2,114 @@
 
 **Know. Verify. Act.**
 
-CivicPulse Lagos is an AI-powered civic information platform that helps Lagos residents understand public spending and government projects using verified information from official government sources.
+CivicPulse Lagos is an AI-powered civic information platform that helps Lagos residents understand public spending and government projects using structured data extracted from official government publications.
 
 > **Public information shouldn't require a government insider to understand.**
 
 ## The Problem
 
-Government budgets and performance reports contain valuable information, but they are often difficult for ordinary citizens to navigate and understand.
+Government budgets and performance reports contain valuable information, but they can be difficult for ordinary citizens to navigate and understand.
 
 A citizen may want to ask:
 
-* How much was budgeted for a particular project?
-* How much has been spent?
-* Which projects received the largest allocations?
-* How much was spent on rail or health projects?
-* Where can I verify the information?
+- How much was budgeted for a project?
+- How much has been spent?
+- Which projects received the largest allocations?
+- How much was spent on rail, health, or infrastructure?
+- Where can I verify the information?
 
 CivicPulse turns these questions into understandable answers while keeping the underlying evidence visible.
 
 ## How It Works
 
-CivicPulse follows an evidence-first approach:
-
 **Ask → Retrieve → Answer → Verify → Act**
 
-1. **Ask** — A citizen asks a question in natural language.
-2. **Retrieve** — CivicPulse identifies relevant structured records from verified government data.
-3. **Answer** — The system generates a concise answer from the retrieved data.
-4. **Verify** — The user sees the official source, reporting period, and document page supporting the answer.
-5. **Act** — The user can open the official document and verify the information independently.
+1. **Ask** — The citizen asks a question in natural language.
+2. **Retrieve** — CivicPulse finds the relevant records from structured government data.
+3. **Answer** — The system presents the information in a concise format.
+4. **Verify** — The answer includes the supporting source and reporting period.
+5. **Act** — The citizen can open the original government document and verify the information independently.
 
-### AI Does Not Decide the Facts
+### Evidence First
 
-CivicPulse is designed around a simple principle:
+CivicPulse is built on a simple principle:
 
 > **The AI explains the evidence; it does not invent the evidence.**
 
-The underlying project and budget figures come from official government publications. The system retrieves relevant evidence before presenting an answer.
+The underlying figures come from official Lagos State government publications. The AI interaction sits on top of the evidence rather than replacing it.
 
-## Current Data Scope
+## Current Data
 
-The current proof of concept focuses on the **Lagos State 2026 Budget and Q1 2026 Budget Performance Report**.
+The current MVP focuses on the **Lagos State 2026 Budget and Q2 2026 Budget Performance Report**.
 
-The dataset currently includes verified capital-project records across areas including:
+The dataset currently covers project-level information across areas including:
 
-* Rail
-* Transportation
-* Health
-* Infrastructure
-* Agriculture
-* Fire and Rescue
+- Rail
+- Transportation
+- Health
+- Infrastructure
+- Agriculture
+- Fire and Rescue
 
-The primary source is the Lagos State Government's **Q1 2026 Budget Performance Report**.
+**Primary source:**
 
-Official source:
-
-https://lagosmepb.org/wp-content/uploads/Lagos%20Q1%272026%20BPR%20Publication.pdf
+[Lagos State Government — Q2 2026 Budget Performance Report](https://lagosmepb.org/wp-content/uploads/Y2026-LASG-Q2-BIR.pdf)
 
 ## Example
 
 A citizen can ask:
 
-> How much did Lagos spend on rail projects in Q1 2026?
+> **How much did Lagos spend on rail projects in Q2 2026?**
 
-CivicPulse can return the verified expenditure across the available rail projects and provide the supporting government report and page number for each result.
+CivicPulse retrieves the relevant project records and presents the available expenditure information together with supporting source references.
 
-This allows the citizen to move from **information → understanding → verification**.
+The user can then follow the evidence back to the official government report.
+
+**Information → Understanding → Verification**
 
 ## Key Features
 
-* Natural-language civic questions
-* Verified government budget data
-* Project-level budget and expenditure information
-* Category-based civic queries
-* Project ranking and comparison
-* Evidence attached to answers
-* Official source links
-* Reporting period and source-page references
-* Simple, accessible interface
-* Evidence-first architecture
+- Natural-language civic questions
+- Project-level budget and expenditure data
+- Category-based queries
+- Project comparison and ranking
+- Evidence attached to answers
+- Official source links
+- Reporting-period and page references
+- Evidence-first retrieval
 
 ## Technology Stack
 
-### Frontend
+**Frontend**
+- React
+- Vite
+- Tailwind CSS
 
-* React
-* Vite
-* Tailwind CSS
-
-### Backend
-
-* Python
-* FastAPI
-* SQLAlchemy
-* SQLite
-* Pydantic
+**Backend**
+- Python
+- FastAPI
+- SQLAlchemy
+- SQLite
+- Pydantic
 
 ### Architecture
 
 ```text
 Citizen
    ↓
-React + Vite Frontend
+React + Vite
    ↓
-FastAPI API
+FastAPI
    ↓
 Question Intent & Retrieval
    ↓
-Verified Project / Budget Data
+Structured Government Data
    ↓
-Evidence Retrieval
+Evidence
    ↓
 Answer + Official Source
-```
-
-## Repository Structure
-
-```text
-civicpulse-lagos/
+Repository Structure
+civicpulse-lagos-api/
 ├── backend/
 │   ├── app/
 │   │   ├── database/
@@ -127,7 +117,7 @@ civicpulse-lagos/
 │   │   ├── routes/
 │   │   ├── schemas/
 │   │   └── services/
-│   └── .gitignore
+│   └── requirements.txt
 │
 ├── frontend/
 │   ├── src/
@@ -136,118 +126,63 @@ civicpulse-lagos/
 │   └── vite.config.js
 │
 └── .gitignore
-```
-
-## Running Locally
-
-### 1. Clone the repository
-
-```bash
+Running Locally
+Backend
 git clone https://github.com/johnkunleajayi/civicpulse-lagos-api.git
-cd civicpulse-lagos-api
-```
+cd civicpulse-lagos-api/backend
 
-### 2. Start the backend
-
-```bash
-cd backend
 python -m venv venv
-```
 
-Activate the virtual environment.
+Windows PowerShell:
 
-**Windows PowerShell:**
-
-```powershell
 .\venv\Scripts\Activate.ps1
-```
 
 Install dependencies:
 
-```bash
 pip install -r requirements.txt
-```
 
 Start the API:
 
-```bash
 python -m uvicorn app.main:app --reload
-```
 
-The API will be available at:
+API:
 
-```text
 http://127.0.0.1:8000
-```
 
-Interactive API documentation:
+Swagger documentation:
 
-```text
 http://127.0.0.1:8000/docs
-```
-
-### 3. Start the frontend
+Frontend
 
 Open another terminal:
 
-```bash
 cd frontend
 npm install
 npm run dev
-```
 
-The frontend will be available at:
+Frontend:
 
-```text
 http://localhost:5173
-```
+Hackathon Context
 
-## Trust & Verification
+CivicPulse Lagos was built for the OSF × Andela Hackathon: Build for Africa, Take It to Kenya.
 
-CivicPulse is built around four principles:
+The project responds to the theme:
 
-### Official Sources
+Information you can trust.
 
-The foundation of the system is published government information.
+It focuses on Transparency & Accountability by making public financial information easier to understand while preserving a clear path back to the original evidence.
 
-### Evidence Before Explanation
+Project Status
 
-Relevant records are retrieved before an answer is presented.
-
-### Traceability
-
-Supported answers expose the source, reporting period, and document page.
-
-### Citizen Verification
-
-Users can open the original government document and independently check the evidence.
-
-## Hackathon Context
-
-CivicPulse Lagos was built for the **OSF × Andela Hackathon: Build for Africa, Take It to Kenya**.
-
-The project aligns with the theme:
-
-> **Information you can trust.**
-
-It contributes to the hackathon tracks around:
-
-* Transparency & Accountability
-* Stability & Social Cohesion
-* Safety, Reporting & Protection
-
-The proof of concept demonstrates how technology can make public information easier to understand while preserving a clear path back to the original evidence.
-
-## Project Status
-
-**Proof of Concept / MVP**
+MVP / Hackathon Proof of Concept
 
 The current version demonstrates the core citizen journey:
 
-**Ask → Understand → Verify**
+Ask → Understand → Verify
 
-Future iterations can expand the data coverage, support additional government datasets, improve multilingual access, and provide more civic actions based on verified information.
+Future iterations can expand the dataset to additional reporting periods, government datasets, sectors, and civic use cases.
 
-## License
+License
 
 This project is currently provided as a hackathon proof of concept.
