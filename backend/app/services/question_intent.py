@@ -26,6 +26,7 @@ STOP_WORDS = {
     "have",
     "has",
     "been",
+    "budget",
     "budgeted",
     "spent",
     "project",
