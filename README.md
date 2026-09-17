@@ -6,6 +6,39 @@ CivicPulse Lagos is an AI-powered civic information platform that helps Lagos re
 
 > **Public information shouldn't require a government insider to understand.**
 
+---
+
+## 🚀 Try CivicPulse
+
+### Live Demo
+
+**[Open CivicPulse Lagos](https://civicpulse-lagos.vercel.app/)**
+
+The live frontend is already connected to the deployed backend. **No local setup is required to test the application.**
+
+### ⚠️ About the Backend
+
+The CivicPulse API is currently hosted on **Render's free tier**.
+
+When the backend has been inactive for a while, Render may put it to sleep. The **first request can therefore take a little longer while the service wakes up**.
+
+If the application appears to be loading slowly, please allow a few seconds and try again.
+
+**Backend API:**  
+https://civicpulse-lagos-api.onrender.com/
+
+**API Documentation:**  
+https://civicpulse-lagos-api.onrender.com/docs
+
+### Backup
+
+If the live application is temporarily unavailable, the project can also be reviewed through the repository and API documentation:
+
+**GitHub Repository:**  
+https://github.com/johnkunleajayi/civicpulse-lagos-api
+
+---
+
 ## The Problem
 
 Government budgets and performance reports contain valuable information, but they can be difficult for ordinary citizens to navigate and understand.
@@ -20,29 +53,33 @@ A citizen may want to ask:
 
 CivicPulse turns these questions into understandable answers while keeping the underlying evidence visible.
 
+---
+
 ## How It Works
 
 **Ask → Retrieve → Answer → Verify → Act**
 
-1. **Ask** — The citizen asks a question in natural language.
-2. **Retrieve** — CivicPulse finds the relevant records from structured government data.
-3. **Answer** — The system presents the information in a concise format.
-4. **Verify** — The answer includes the supporting source and reporting period.
+1. **Ask** — A citizen asks a question in natural language.
+2. **Retrieve** — CivicPulse identifies relevant records from structured government data.
+3. **Answer** — The system presents the information in an understandable format.
+4. **Verify** — Supporting source and reporting-period information is provided.
 5. **Act** — The citizen can open the original government document and verify the information independently.
 
 ### Evidence First
 
-CivicPulse is built on a simple principle:
+CivicPulse follows a simple principle:
 
 > **The AI explains the evidence; it does not invent the evidence.**
 
 The underlying figures come from official Lagos State government publications. The AI interaction sits on top of the evidence rather than replacing it.
 
+---
+
 ## Current Data
 
 The current MVP focuses on the **Lagos State 2026 Budget and Q2 2026 Budget Performance Report**.
 
-The dataset currently covers project-level information across areas including:
+The dataset currently contains project-level information across areas including:
 
 - Rail
 - Transportation
@@ -51,9 +88,13 @@ The dataset currently covers project-level information across areas including:
 - Agriculture
 - Fire and Rescue
 
-**Primary source:**
+### Primary Source
 
-[Lagos State Government — Q2 2026 Budget Performance Report](https://lagosmepb.org/wp-content/uploads/Y2026-LASG-Q2-BIR.pdf)
+**Lagos State Government — Q2 2026 Budget Performance Report**
+
+https://lagosmepb.org/wp-content/uploads/Y2026-LASG-Q2-BIR.pdf
+
+---
 
 ## Example
 
@@ -63,9 +104,11 @@ A citizen can ask:
 
 CivicPulse retrieves the relevant project records and presents the available expenditure information together with supporting source references.
 
-The user can then follow the evidence back to the official government report.
+The citizen can then follow the evidence back to the official government report.
 
 **Information → Understanding → Verification**
+
+---
 
 ## Key Features
 
@@ -75,17 +118,22 @@ The user can then follow the evidence back to the official government report.
 - Project comparison and ranking
 - Evidence attached to answers
 - Official source links
-- Reporting-period and page references
+- Reporting-period references
+- Source-page references
 - Evidence-first retrieval
+
+---
 
 ## Technology Stack
 
-**Frontend**
+### Frontend
+
 - React
 - Vite
 - Tailwind CSS
 
-**Backend**
+### Backend
+
 - Python
 - FastAPI
 - SQLAlchemy
@@ -171,7 +219,7 @@ The project responds to the theme:
 
 Information you can trust.
 
-It focuses on Transparency & Accountability by making public financial information easier to understand while preserving a clear path back to the original evidence.
+CivicPulse focuses on Transparency & Accountability by making public financial information easier to understand while preserving a clear path back to the original evidence.
 
 Project Status
 
@@ -181,7 +229,9 @@ The current version demonstrates the core citizen journey:
 
 Ask → Understand → Verify
 
-Future iterations can expand the dataset to additional reporting periods, government datasets, sectors, and civic use cases.
+The MVP currently uses Lagos State 2026 budget and Q2 2026 budget performance data.
+
+Future iterations can expand coverage to additional reporting periods, government datasets, sectors, and civic use cases.
 
 License
 
